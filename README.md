@@ -1,11 +1,10 @@
-**Table of contents**
 - [Introduction](#introduction)
 	- [Summary](#summary)
 	- [Motivations and project goals](#motivations-and-project-goals)
 - [Behavior-driven documentation](#behavior-driven-documentation)
 - [Technical documentation](#technical-documentation)
+	- [Technology stack](#technology-stack)
 	- [Features](#features)
-	- [Technologies and dependencies](#technologies-and-dependencies)
 	- [Plans for the future](#plans-for-the-future)
 - [Credits](#credits)
 
@@ -32,16 +31,21 @@ The scope of the Interactive Book application is written in Gherkin, defined via
 - Settings
 
 # Technical documentation
-## Features
-TBA
-
-## Technologies and dependencies
+## Technology stack
 - React Native with Expo
+- TBA
+
+## Features
 - React Navigation
+  - Native Stack navigator
+  - Tab navigator
+- TBA
 
 ## Plans for the future
-TBA
 - iOS fine-tuning (some styles are android-specific atm)
+- Authentication
+- TBA
 
 # Credits
-TBA 
+- Art created by Midjourney
+- TBA 

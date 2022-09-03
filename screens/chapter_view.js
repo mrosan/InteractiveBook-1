@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { Text } from 'react-native'
 
-import { Chapters } from '../constants/dummydata'
+import { Chapters } from '../constants/dummy_data'
 
 function ChapterView({ navigation, route }) {
 	const id = route.params.chapterID;

@@ -1,5 +1,5 @@
 import { FlatList, View, Pressable, Text, Image, StyleSheet, useWindowDimensions } from 'react-native'
-import { Books } from '../constants/dummydata'
+import { Books } from '../constants/dummy_data'
 
 function BookCollection({ navigation }) {
 

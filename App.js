@@ -5,11 +5,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'
 
-import BookCollection from './screens/BookCollection';
-import Bookmarks from './screens/Bookmarks';
-import BookView from './screens/BookView';
-import ChapterView from './screens/ChapterView';
-import Settings from './screens/Settings';
+import BookCollection from './screens/book_collection';
+import Bookmarks from './screens/bookmarks';
+import BookView from './screens/book_view';
+import ChapterView from './screens/chapter_view';
+import Settings from './screens/settings';
 import { ColorPalette as colors } from './constants/styles';
 
 const Stack = createNativeStackNavigator();

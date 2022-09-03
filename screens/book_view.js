@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, FlatList, Pressable, useWindowDimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-import { Books, Chapters } from '../constants/dummydata'
+import { Books, Chapters } from '../constants/dummy_data'
 import { ColorPalette as colors } from '../constants/styles';
 
 function BookView({ route, navigation }) {
