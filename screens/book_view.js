@@ -2,18 +2,17 @@ import { View, Text, Image, StyleSheet, FlatList, Pressable, useWindowDimensions
 import { Ionicons } from '@expo/vector-icons'
 
 import { Books, Chapters } from '../constants/dummy_data'
-import { ColorPalette as colors } from '../constants/styles';
+import { ColorPalette as colors } from '../constants/styles'
 
 function BookView({ route, navigation }) {
 	const id = route.params.bookID;
 	const book = Books.find((book) => book.id === id);
 	const chapters = Chapters.filter((chapter) => chapter.bookID === id);
-	const theme = "light"; // TODO theme switching
 	const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 	const { width, height } = useWindowDimensions();
 	const portrait = width < height;
 
-	return <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
+	return <View style={styles.page}>
 		<View style={{ flex: 1, justifyContent: 'flex-start' }}>
 			<View style={styles.overview}>
 				<Image source={{ uri: book.cover }} style={styles.coverImg} />
@@ -22,11 +21,7 @@ function BookView({ route, navigation }) {
 					{book.subtitle && <Text style={styles.subtitle}>{book.subtitle}</Text>}
 					<View style={styles.detailTextContainer}>
 						<View style={styles.genres}>
-							{book.genre.map((genre) => {
-								return <Text key={genre}
-									style={[styles.genre, { backgroundColor: colors[theme].ternary }]}> {genre}
-								</Text>
-							})}
+							{book.genre.map((genre) => <Text key={genre} style={styles.genre}>{genre}</Text>)}
 						</View>
 						<Text><B>Author:</B> {book.author}</Text>
 						<Text><B>Length:</B> {book.length}</Text>
@@ -34,16 +29,16 @@ function BookView({ route, navigation }) {
 					</View>
 				</View>
 			</View>
-			<Text style={[styles.summary, { color: colors[theme].contrast }]}><B>Synopsis:</B> {book.summary}</Text>
-			{portrait && <ChapterListContainer chapters={chapters} theme={theme} navigation={navigation} portraitMode={portrait} />}
+			<Text style={styles.summary}><B>Synopsis:</B> {book.summary}</Text>
+			{portrait && <ChapterListContainer chapters={chapters} navigation={navigation} portraitMode={portrait} />}
 		</View>
-		{!portrait && <ChapterListContainer chapters={chapters} theme={theme} navigation={navigation} portraitMode={portrait} />}
+		{!portrait && <ChapterListContainer chapters={chapters} navigation={navigation} portraitMode={portrait} />}
 	</View>
 }
 
-function ChapterListContainer({ chapters, theme, navigation, portraitMode }) {
+function ChapterListContainer({ chapters, navigation, portraitMode }) {
 	const nav = navigation;
-	return <View style={[styles.chapterList, portraitMode ? styles.chapterListBorder : {}, { borderTopColor: colors[theme].ternary }]}>
+	return <View style={[styles.chapterList, portraitMode ? styles.chapterListBorder : {}]}>
 		{!!chapters.length && <FlatList
 			data={chapters}
 			keyExtractor={(item) => item.id}
@@ -68,6 +63,11 @@ function ChapterListItem(itemData) {
 export default BookView;
 
 const styles = StyleSheet.create({
+	page: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-start'
+	},
 	overview: {
 		flexDirection: 'row',
 		padding: 16,
@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
 		borderRadius: 16,
 		paddingHorizontal: 4,
 		paddingVertical: 2,
-		marginHorizontal: 4
+		marginHorizontal: 4,
+		backgroundColor: colors.light.ternary
 	},
 	summary: {
 		marginHorizontal: 16
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
 	chapterList: {
 		flex: 1,
 		margin: 24,
+		borderTopColor: colors.light.ternary
 	},
 	chapterListBorder: {
 		borderTopWidth: 2,

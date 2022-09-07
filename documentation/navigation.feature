@@ -1,4 +1,5 @@
 Feature: Navigating within the Interactive Book app
+	As a user, I'd like to be able to navigate between the app's screens so that I can access the app's features easily.
 
 	Scenario: Arriving at the index screen of the app
 		Given that I started the app for the first time
@@ -31,10 +32,15 @@ Feature: Navigating within the Interactive Book app
 			| Without saved bookmarks | no     |
 			| With saved bookmarks    | two    |
 
-	Scenario: Entering the Settings menu
-		Given that I'm on the Library screen
-		When I select the Settings tab
+	Scenario Outline: Entering the Settings menu
+		Given that I'm on the <screen>
+		When I select the <button>
 		Then I arrive at the Settings screen
+
+		Examples:
+			| title            | screen         | button          |
+			| From the Library | Library screen | Settings tab    |
+			| While reading    | Reading view   | Settings button |
 
 # Annotations:
 #		Library screen: the main page with a list of books

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,6 +10,8 @@ import Bookmarks from './screens/bookmarks';
 import BookView from './screens/book_view';
 import ChapterView from './screens/chapter_view';
 import Settings from './screens/settings';
+import ReaderContextProvider from './state/reader_context';
+import { HeaderRightButtons } from './components/header_buttons'
 import { ColorPalette as colors } from './constants/styles';
 
 const Stack = createNativeStackNavigator();
@@ -19,27 +21,23 @@ export default function App() {
 	return (
 		<>
 			<StatusBar style='auto' />
-			<NavigationContainer>
-				<Stack.Navigator screenOptions={DynamicHeaderStyles()}>
-					<Stack.Screen name="BooksOverview" component={BooksOverview} options={{ headerShown: false }} />
-					<Stack.Screen name="BookView" component={BookView} options={{ title: "Book cover" }} />
-					<Stack.Screen name="ChapterView" component={ChapterView} />
-				</Stack.Navigator>
-			</NavigationContainer>
+			<ReaderContextProvider>
+				<NavigationContainer>
+					<Stack.Navigator screenOptions={styles.header}>
+						<Stack.Screen name="BooksOverview" component={BooksOverview} options={{ headerShown: false }} />
+						<Stack.Screen name="BookView" component={BookView} options={{ title: "Book cover" }} />
+						<Stack.Screen name="ChapterView" component={ChapterView} options={{ headerRight: HeaderRightButtons }} />
+						<Stack.Screen name="Settings" component={Settings} />
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ReaderContextProvider>
 		</>
 	);
 }
 
 // App landing page
 function BooksOverview() {
-	const theme = "light"; // TODO theme switching
-	const navigatorStyle = Object.assign({}, DynamicHeaderStyles(), {
-		tabBarStyle: { backgroundColor: colors[theme].secondary },
-		tabBarActiveTintColor: colors[theme].contrast,
-		tabBarInactiveTintColor: colors[theme].off,
-		tabBarShowLabel: false
-	});
-	return <Tabs.Navigator screenOptions={navigatorStyle}>
+	return <Tabs.Navigator screenOptions={Object.assign({}, styles.header, styles.footer)}>
 		<Tabs.Screen name="Library" component={BookCollection} options={{
 			tabBarIcon: ({ color, size }) => <Ionicons name='library' size={size} color={color} />
 		}} />
@@ -47,21 +45,21 @@ function BooksOverview() {
 			tabBarIcon: ({ color, size }) => <Ionicons name='bookmark' size={size} color={color} />
 		}} />
 		<Tabs.Screen name="Settings" component={Settings} options={{
-			tabBarIcon: ({ color, size }) => <Ionicons name='settings' size={size} color={color} />
+			tabBarIcon: ({ color, size }) => <Ionicons name='settings-sharp' size={size} color={color} />
 		}} />
 	</Tabs.Navigator>;
 }
 
-function DynamicHeaderStyles() {
-	const { width, height } = useWindowDimensions();
-	const portrait = width < height;
-	const theme = "light"; // TODO theme switching
-
-	return {
-		headerStyle: { backgroundColor: colors[theme].secondary },
-		headerTintColor: colors[theme].contrast,
-		headerStatusBarHeight: portrait ? 24 : 12,
-		headerTitleStyle: { marginTop: portrait ? 4 : 8 },
-		headerTitleAlign: 'center'
+const styles = StyleSheet.create({
+	header: {
+		headerStyle: { backgroundColor: colors.light.secondary },
+		headerTintColor: colors.light.contrast,
+		headerTitleAlign: 'center',
+	},
+	footer: {
+		tabBarStyle: { backgroundColor: colors.light.secondary },
+		tabBarActiveTintColor: colors.light.contrast,
+		tabBarInactiveTintColor: colors.light.off,
+		tabBarShowLabel: false
 	}
-}
+});

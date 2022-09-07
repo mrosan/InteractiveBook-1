@@ -49,7 +49,7 @@ export const Chapters = [
 		id: "2",
 		bookID: "gemslingers-1",
 		title: "Chapter 2",
-		content: `“Man, I’m so sorry about that [Crackling Lance],” Tom said. “I really am. I've [Concentrated Effect] linked to it, so I thought that I might be able to control the lightning. Make it hit only the lizard, you know?”`,
+		content: `“Man, I’m so sorry about that [Crackling Lance],” Tom said. “I really am. I've got [Concentrated Effect] linked to it, so I thought that I might be able to control the lightning. Make it hit only the lizard, you know?”`,
 		note: "",
 		draft: false
 	},
@@ -70,3 +70,21 @@ export const Chapters = [
 		draft: true
 	},
 ];
+
+export const Annotations = [
+	{
+		bookID: "gemslingers-1",
+		items: [
+			{
+				id: "Crackling Lance",
+				img: "https://i.imgur.com/yrvYvyT.jpg",
+				desc: "Crackling Lance is a gemstone that allows the caster to fire a lightning bolt. Channeling the spell while standing still builds the intensity of the lightning bolt and reduces its spread."
+			},
+			{
+				id: "Concentrated Effect",
+				img: "https://i.imgur.com/J1yz3Qy.jpg",
+				desc: "Concentrated Effect is a support gemstone that increases the area damage dealt by other gemstones connected to it, but reduces their area of effect."
+			},
+		]
+	}
+]

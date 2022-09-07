@@ -26,9 +26,9 @@ In the Interactive Book app, users can read stories while being able to interact
 The scope of the Interactive Book application is written in Gherkin, defined via the Cucumber framework. For the ease of understanding, the following documents should be read in order:
 
 - [Navigation](./documentation/navigation.feature)
-- Reading view
+- [Reading view](./documentation/reading_view.feature)
 - Bookmarks
-- Settings
+- [Settings](./documentation/settings.feature)
 
 # Technical documentation
 ## Technology stack
@@ -36,16 +36,23 @@ The scope of the Interactive Book application is written in Gherkin, defined via
 - TBA
 
 ## Features
-- React Navigation
-  - Native Stack navigator
-  - Tab navigator
+- React Navigation: Native Stack navigator, Tab navigator
+- Wide variety of React Native components e.g. Flatlist, Pressable, Modal
+- State handling with Context API
 - TBA
 
 ## Plans for the future
-- iOS fine-tuning (some styles are android-specific atm)
+- iOS fine-tuning
+- Themes for the whole app
 - Authentication
+  - User feedback support
+  - Purchase-only content
+- More interactive features
+  - Pinch zoom to change fontsize
+  - "Choose your own adventure" style books
 - TBA
 
 # Credits
-- Art created by Midjourney
+- Art created with [Midjourney](https://www.midjourney.com/)
+- Gemslingers inspired by [Path of Exile](https://www.pathofexile.com/)
 - TBA 

@@ -8,18 +8,16 @@ export const ColorPalette = {
 	},
 	dark: {
 		primary: 'black',
-		secondary: 'darkslateblue',
-		ternary: 'lightslateblue',
+		secondary: '#333399',
+		ternary: '#2929a3',
 		contrast: 'white',
-		off: 'slategray'
+		off: '#202060'
 	},
-	relax: {
-		primary: 'moccasin',
-		secondary: 'wheat',
-		ternary: 'linen',
+	cozy: {
+		primary: '#ffebcc',
+		secondary: '#ffc266',
+		ternary: '#ffd699',
 		contrast: 'black',
-		off: 'white'
+		off: '#fff5e6'
 	},
 }
-
-// TODO commonly used stylesheets, e.g. for title
