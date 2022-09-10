@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export const ColorPalette = {
 	light: {
 		primary: 'white',
@@ -21,3 +23,20 @@ export const ColorPalette = {
 		off: '#fff5e6'
 	},
 }
+
+export const DefaultAppStyle = StyleSheet.create({
+	app: {
+		flex: 1
+	},
+	header: {
+		headerStyle: { backgroundColor: ColorPalette.light.secondary },
+		headerTintColor: ColorPalette.light.contrast,
+		headerTitleAlign: 'center',
+	},
+	footer: {
+		tabBarStyle: { backgroundColor: ColorPalette.light.secondary },
+		tabBarActiveTintColor: ColorPalette.light.contrast,
+		tabBarInactiveTintColor: ColorPalette.light.off,
+		tabBarShowLabel: false
+	}
+});

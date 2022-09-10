@@ -32,3 +32,7 @@ Feature: Reading chapters within the Interactive Book app
 			| title         | location                             |
 			| Click inside  | annotation                           |
 			| Click outside | the screen outside of the annotation |
+
+# To be implemented:
+# Scenario: Navigating to the next chapter
+# Scenario: Navigating to the previous chapter

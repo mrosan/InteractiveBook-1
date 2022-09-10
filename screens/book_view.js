@@ -51,7 +51,7 @@ function ChapterListContainer({ chapters, navigation, portraitMode }) {
 
 function ChapterListItem(itemData) {
 	return <Pressable android_ripple={{ color: '#ccc' }} onPress={() => {
-		this.navigate("ChapterView", { chapterID: itemData.item.id });
+		this.navigate("ChapterView", { chapterID: itemData.item.id, bookID: itemData.item.bookID });
 	}}>
 		<View style={{ flexDirection: 'row', alignContent: 'center' }}>
 			<View style={{ justifyContent: 'center' }}><Ionicons name='book' size={24} color={'black'} /></View>
@@ -70,16 +70,16 @@ const styles = StyleSheet.create({
 	},
 	overview: {
 		flexDirection: 'row',
-		padding: 16,
+		padding: 16
 	},
 	coverImg: {
 		width: 100,
 		height: 150,
 		borderRadius: 8,
-		overflow: 'hidden',
+		overflow: 'hidden'
 	},
 	details: {
-		paddingHorizontal: 16,
+		paddingHorizontal: 16
 	},
 	title: {
 		fontWeight: 'bold',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 	},
 	subtitle: {
 		fontSize: 12,
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	detailTextContainer: {
 		marginVertical: 12,
@@ -110,18 +110,18 @@ const styles = StyleSheet.create({
 	},
 	chapterList: {
 		flex: 1,
-		margin: 24,
-		borderTopColor: colors.light.ternary
+		margin: 24
 	},
 	chapterListBorder: {
 		borderTopWidth: 2,
 		borderTopStartRadius: 48,
 		borderTopEndRadius: 48,
-		paddingTop: 16,
+		borderTopColor: colors.light.ternary,
+		paddingTop: 16
 	},
 	chapterListItem: {
 		fontWeight: 'bold',
 		fontSize: 20,
-		padding: 8,
+		padding: 8
 	}
 });

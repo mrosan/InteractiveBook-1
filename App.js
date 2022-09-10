@@ -1,65 +1,108 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { View, AppState } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'
+import { StatusBar } from 'expo-status-bar';
+import * as SplashScreen from 'expo-splash-screen';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 
-import BookCollection from './screens/book_collection';
-import Bookmarks from './screens/bookmarks';
+import BooksOverview from './screens/books_overview';
 import BookView from './screens/book_view';
 import ChapterView from './screens/chapter_view';
 import Settings from './screens/settings';
+import ErrorScreen from './screens/error';
 import ReaderContextProvider from './state/reader_context';
-import { HeaderRightButtons } from './components/header_buttons'
-import { ColorPalette as colors } from './constants/styles';
+import { initDatabase, saveBookmark, fetchBookmarks, clearBookmarks } from './utils/database';
+import { DefaultAppStyle } from './constants/styles';
+import { store, addBookmark, emptyBookmarkStore, createUniqueBookmarkID } from './state/bookmarks_store'
 
 const Stack = createNativeStackNavigator();
-const Tabs = createBottomTabNavigator();
 
 export default function App() {
+	return <Provider store={store}>
+		<AppContent />
+	</Provider>
+}
+
+function AppContent() {
+	const dispatcher = useDispatch();
+	const [inited, setupError, onLayoutRootView] = initApp(dispatcher);
+	const bookmarks = useSelector((state) => state.bookmarksR.ids);
+	// Disabled feature: save bookmarks to database when app goes to the background
+	// setupAppStateObserver(inited, bookmarks);
+
+	if (setupError) {
+		return <ErrorScreen />
+	} else if (!inited) {
+		return null;
+	}
+
 	return (
-		<>
+		<View style={DefaultAppStyle.app} onLayout={onLayoutRootView}>
 			<StatusBar style='auto' />
 			<ReaderContextProvider>
 				<NavigationContainer>
-					<Stack.Navigator screenOptions={styles.header}>
+					<Stack.Navigator screenOptions={DefaultAppStyle.header}>
 						<Stack.Screen name="BooksOverview" component={BooksOverview} options={{ headerShown: false }} />
 						<Stack.Screen name="BookView" component={BookView} options={{ title: "Book cover" }} />
-						<Stack.Screen name="ChapterView" component={ChapterView} options={{ headerRight: HeaderRightButtons }} />
+						<Stack.Screen name="ChapterView" component={ChapterView} options={{}} />
 						<Stack.Screen name="Settings" component={Settings} />
 					</Stack.Navigator>
 				</NavigationContainer>
 			</ReaderContextProvider>
-		</>
+		</View>
 	);
 }
 
-// App landing page
-function BooksOverview() {
-	return <Tabs.Navigator screenOptions={Object.assign({}, styles.header, styles.footer)}>
-		<Tabs.Screen name="Library" component={BookCollection} options={{
-			tabBarIcon: ({ color, size }) => <Ionicons name='library' size={size} color={color} />
-		}} />
-		<Tabs.Screen name="Bookmarks" component={Bookmarks} options={{
-			tabBarIcon: ({ color, size }) => <Ionicons name='bookmark' size={size} color={color} />
-		}} />
-		<Tabs.Screen name="Settings" component={Settings} options={{
-			tabBarIcon: ({ color, size }) => <Ionicons name='settings-sharp' size={size} color={color} />
-		}} />
-	</Tabs.Navigator>;
+function initApp(dispatcher) {
+	const [inited, setInited] = useState(false);
+	let errorHappened = false;
+
+	useEffect(() => {
+		initDatabase().then(() => {
+			// Disabled feature: load bookmarks from database to store at every app init
+			/*
+			fetchBookmarks().then((res) => {
+				dispatcher(emptyBookmarkStore());
+				for (let i = 0; i < res.rows._array.length; i++) {
+					const { chapterID, bookID } = res.rows._array[i];
+					dispatcher(addBookmark({ id: createUniqueBookmarkID(bookID, chapterID) }));
+				}
+			});
+			*/
+			setInited(true);
+		}).catch(() => {
+			errorHappened = true;
+		});
+		setInited(true);
+	}, []);
+
+	const onLayoutRootView = useCallback(async () => {
+		if (inited) {
+			await SplashScreen.hideAsync();
+		}
+	}, [inited]);
+
+	return [inited, errorHappened, onLayoutRootView];
 }
 
-const styles = StyleSheet.create({
-	header: {
-		headerStyle: { backgroundColor: colors.light.secondary },
-		headerTintColor: colors.light.contrast,
-		headerTitleAlign: 'center',
-	},
-	footer: {
-		tabBarStyle: { backgroundColor: colors.light.secondary },
-		tabBarActiveTintColor: colors.light.contrast,
-		tabBarInactiveTintColor: colors.light.off,
-		tabBarShowLabel: false
-	}
-});
+function setupAppStateObserver(dbInited, bookmarks) {
+	const appState = useRef(AppState.currentState);
+	useEffect(() => {
+		const subscription = AppState.addEventListener("change", nextAppState => {
+			if (["inactive", "background"].includes(nextAppState) && appState.current.match(/active/)) {
+				if (dbInited) {
+					clearBookmarks().then(() => {
+						for (let i = 0; i < bookmarks.length; i++) {
+							const ids = bookmarks[i].split("/");
+							saveBookmark({ bookID: ids[0], chapterID: ids[1] }).catch((err) => { console.log(err); });
+						}
+					});
+				}
+			}
+		});
+		return () => {
+			subscription.remove();
+		};
+	}, []);
+}

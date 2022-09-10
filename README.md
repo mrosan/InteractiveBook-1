@@ -3,8 +3,7 @@
 	- [Motivations and project goals](#motivations-and-project-goals)
 - [Behavior-driven documentation](#behavior-driven-documentation)
 - [Technical documentation](#technical-documentation)
-	- [Technology stack](#technology-stack)
-	- [Features](#features)
+	- [Tech stack and features](#tech-stack-and-features)
 	- [Plans for the future](#plans-for-the-future)
 - [Credits](#credits)
 
@@ -27,18 +26,18 @@ The scope of the Interactive Book application is written in Gherkin, defined via
 
 - [Navigation](./documentation/navigation.feature)
 - [Reading view](./documentation/reading_view.feature)
-- Bookmarks
+- [Bookmarks](./documentation/bookmarks.feature)
 - [Settings](./documentation/settings.feature)
 
 # Technical documentation
-## Technology stack
+## Tech stack and features
 - React Native with Expo
-- TBA
-
-## Features
+  - Wide variety of RN components e.g. Flatlist, Pressable, Modal
+  - State handling with Context API
+  - AppState and event listeners
+  - SQLite database
 - React Navigation: Native Stack navigator, Tab navigator
-- Wide variety of React Native components e.g. Flatlist, Pressable, Modal
-- State handling with Context API
+- React Redux
 - TBA
 
 ## Plans for the future

@@ -21,7 +21,7 @@ export const Books = [
 		genre: ["Sci-Fi", "Thriller", "Biotech"],
 		cover: "https://i.imgur.com/xZZK39X.png",
 		length: "10 pages",
-		status: "completed"
+		status: "unavailable"
 	},
 	{
 		id: "synergy-1",
@@ -32,7 +32,7 @@ export const Books = [
 		genre: ["Fantasy", "Adventure", "GameLit"],
 		cover: "https://i.imgur.com/HT22xAz.jpg",
 		length: "139601 words",
-		status: "ongoing"
+		status: "hiatus"
 	}
 ];
 
