@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { Modal, Text, View, Pressable, Image, StyleSheet } from 'react-native'
 
+import { UnknownAnnotation } from '../constants/dummy_data'
 import { ColorPalette as colors } from '../constants/styles'
 import { ReaderContext } from '../state/reader_context'
 
@@ -9,7 +10,7 @@ export function InfoModal({ selectedAnnotation, modalHandler, annotations }) {
 	const theme = ctx.theme;
 	const fontSize = Math.min(ctx.fontSize, 20);
 	const id = selectedAnnotation.substring(1);
-	const annotation = annotations[id];
+	const annotation = annotations[id] ?? UnknownAnnotation;
 
 	return <Modal visible={selectedAnnotation !== "" && selectedAnnotation !== undefined} animationType='fade' transparent={true}>
 		<Pressable style={styles.modalPressable} onPress={() => { modalHandler("") }}>

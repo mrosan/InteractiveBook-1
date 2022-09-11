@@ -1,8 +1,9 @@
 import { useLayoutEffect, useContext, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { ColorPalette as colors } from '../constants/styles'
+import { Chapter } from '../components/chapter_content'
 import { InfoModal } from '../components/info_modal'
 import { HeaderRightButtons } from '../components/header_buttons';
 import { ReaderContext } from '../state/reader_context'
@@ -33,9 +34,9 @@ function ChapterView({ navigation, route }) {
 	const theme = ctx.theme;
 	const fontStyle = {
 		color: colors[theme].contrast,
-		fontSize: ctx.fontSize
+		fontSize: ctx.fontSize,
+		textAlign: 'justify'
 	};
-	const splitContent = parseChapterContent(chapterContent.chapter.content);
 
 	function changeBookmarkStatus() {
 		if (chapterIsLoaded) {
@@ -71,24 +72,19 @@ function ChapterView({ navigation, route }) {
 	}, [chapterContent.chapter.title, navigation, ctx, changeBookmarkStatus]);
 
 	// TODO previous/next chapter buttons to the bottom
-	return <View style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
+	return <ScrollView style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
 		{selectedAnnotation && <InfoModal
 			selectedAnnotation={selectedAnnotation}
 			modalHandler={setSelectedAnnotation}
 			annotations={chapterContent.annotations}
 		/>}
-		<Text style={fontStyle}>
-			{splitContent.map((string) => {
-				if (string[0] === '#') {
-					return <Text onPress={() => setSelectedAnnotation(string)} style={[fontStyle, { fontWeight: 'bold' }]} key={string + Math.random()/*TODO*/}>
-						{string.substring(1)}
-					</Text>
-				} else {
-					return string;
-				}
-			})}
-		</Text>
-	</View>
+		<Chapter
+			content={chapterContent.chapter.content}
+			fontStyle={fontStyle}
+			modalHandler={setSelectedAnnotation}
+		/>
+		<View style={{ height: 50 }} />
+	</ScrollView>
 }
 
 export default ChapterView;
@@ -101,29 +97,6 @@ async function loadChapterContent(bookmarkID) {
 		chapter: result.book.Chapters.find((chap) => chap.id == sepIDs[1] /*not ===*/),
 		annotations: result.annotations
 	}
-}
-
-function parseChapterContent(content) {
-	let splitContent = [];
-	let normalStr = "";
-	let annotation = "";
-	for (let i = 0; i < content.length; i++) {
-		const c = content[i];
-		if (c === "[") {
-			splitContent.push(normalStr);
-			normalStr = "";
-			annotation = "#";
-		} else if (c === "]") {
-			splitContent.push(annotation);
-			annotation = "";
-		} else if (annotation) {
-			annotation += c;
-		} else {
-			normalStr += c;
-		}
-	}
-	splitContent.push(normalStr);
-	return splitContent;
 }
 
 const styles = StyleSheet.create({

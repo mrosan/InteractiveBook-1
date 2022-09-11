@@ -27,8 +27,10 @@ function BookView({ route, navigation }) {
 		});
 	}, []);
 
-	if (book.id === 'loading') {
-		return <View></View> // TODO loading screen
+	if (book.id === 'loading') { // TODO loading screen
+		return <View style={{ flex: 1, justifyContent: 'center' }}>
+			<Text style={{ fontSize: 28, flexDirection: 'row', alignSelf: 'center' }}>Loading book...</Text>
+		</View>
 	}
 
 	return <View style={styles.page}>

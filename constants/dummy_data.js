@@ -10,3 +10,8 @@ export const LoadingBook = {
 	status: "loading",
 	Chapters: []
 }
+
+export const UnknownAnnotation = {
+	desc: "No data.",
+	img: "https://i.imgur.com/RRsfYXx.jpg"
+}
