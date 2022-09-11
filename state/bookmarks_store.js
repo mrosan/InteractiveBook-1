@@ -3,26 +3,30 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 const bookmarksSlice = createSlice({
 	name: 'bookmarks',
 	initialState: {
-		ids: []
+		bookmarks: []
 	},
 	reducers: {
 		addBookmark: (state, action) => {
-			if (!state.ids.includes(action.payload.id)) {
-				state.ids.push(action.payload.id);
+			if (!state.bookmarks.map((b) => b.id).includes(action.payload.id)) {
+				state.bookmarks.push({
+					id: action.payload.id,
+					chapterTitle: action.payload.chapterTitle,
+					bookTitle: action.payload.bookTitle,
+				});
 			}
 		},
 		removeBookmark: (state, action) => {
-			state.ids.splice(state.ids.indexOf(action.payload.id), 1);
+			state.bookmarks = state.bookmarks.filter((b) => b.id !== action.payload.id);
 		},
 		clearBookmarks: (state, action) => {
-			state.ids = [];
+			state.bookmarks = [];
 		},
 	}
 });
 
 export const store = configureStore({
 	reducer: {
-		bookmarksR: bookmarksSlice.reducer
+		bookmarksReducer: bookmarksSlice.reducer
 	}
 });
 

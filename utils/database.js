@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite'
-import { openDatabase } from 'expo-sqlite'
 
 const database = SQLite.openDatabase('bookmarks.db');
 
@@ -8,8 +7,10 @@ export function initDatabase() {
 		database.transaction((tx) => {
 			tx.executeSql(`CREATE TABLE IF NOT EXISTS bookmarks (
 				id INTEGER PRIMARY KEY NOT NULL,
-				bookID INTEGER NOT NULL,
-				chapterID INTEGER NOT NULL
+				bookID TEXT NOT NULL,
+				chapterID TEXT NOT NULL,
+				bookTitle TEXT NOT NULL,
+				chapterTitle TEXT NOT NULL
 			)`,
 				[],
 				() => { resolve(); },
@@ -23,8 +24,8 @@ export function saveBookmark(bookmark) {
 	return new Promise((resolve, reject) => {
 		database.transaction((tx) => {
 			tx.executeSql(
-				`INSERT INTO bookmarks (bookID, chapterID) VALUES (?,?)`,
-				[bookmark.bookID, bookmark.chapterID],
+				`INSERT INTO bookmarks (bookID, chapterID, bookTitle, chapterTitle) VALUES (?,?,?,?)`,
+				[bookmark.bookID, bookmark.chapterID, bookmark.bookTitle, bookmark.chapterTitle],
 				(_, result) => { resolve(result); },
 				(_, error) => { reject(error); }
 			);

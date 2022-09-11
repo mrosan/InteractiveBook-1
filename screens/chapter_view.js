@@ -2,35 +2,52 @@ import { useLayoutEffect, useContext, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Chapters } from '../constants/dummy_data'
 import { ColorPalette as colors } from '../constants/styles'
 import { InfoModal } from '../components/info_modal'
 import { HeaderRightButtons } from '../components/header_buttons';
 import { ReaderContext } from '../state/reader_context'
 import { addBookmark, removeBookmark, createUniqueBookmarkID } from '../state/bookmarks_store'
+import { fetchBookWithAnnotation } from '../utils/http'
 
 function ChapterView({ navigation, route }) {
-	const id = route.params.chapterID;
-	const bid = route.params.bookID;
-	const chapter = Chapters.find((chapter) => chapter.id === id && chapter.bookID === bid);
 	const ctx = useContext(ReaderContext);
+	const bookmarks = useSelector((state) => state.bookmarksReducer.bookmarks);
+	const dispatcher = useDispatch();
+	const [selectedAnnotation, setSelectedAnnotation] = useState("");
+	const [chapterContent, setChapterContent] = useState({
+		book: route.params.book ?? { id: -1, title: "Loading..." },
+		chapter: route.params.chapter ?? { id: -1, content: "" },
+		annotations: route.params.annotations ?? [],
+	});
+	const bmID = route.params.bookmarkID ?? createUniqueBookmarkID(chapterContent.book.id, chapterContent.chapter.id);
+	const chapterIsBookmarked = bookmarks.map((b) => b.id).includes(bmID);
+	const [chapterIsLoaded, setChapterIsLoaded] = useState(chapterContent.chapter?.id !== -1);
+
+	if (!chapterIsLoaded) {
+		loadChapterContent(bmID).then((res) => {
+			setChapterIsLoaded(true);
+			setChapterContent(res);
+		});
+	}
+
 	const theme = ctx.theme;
 	const fontStyle = {
 		color: colors[theme].contrast,
 		fontSize: ctx.fontSize
 	};
-	const [selectedAnnotation, setSelectedAnnotation] = useState("");
-	const bookmarkIds = useSelector((state) => state.bookmarksR.ids);
-	const bmID = createUniqueBookmarkID(bid, id);
-	const chapterIsBookmarked = bookmarkIds.includes(bmID)
-	const dispatcher = useDispatch();
-	const splitContent = parseChapterContent(chapter.content);
+	const splitContent = parseChapterContent(chapterContent.chapter.content);
 
 	function changeBookmarkStatus() {
-		if (chapterIsBookmarked) {
-			dispatcher(removeBookmark({ id: bmID }));
-		} else {
-			dispatcher(addBookmark({ id: bmID }));
+		if (chapterIsLoaded) {
+			if (chapterIsBookmarked) {
+				dispatcher(removeBookmark({ id: bmID }));
+			} else {
+				dispatcher(addBookmark({
+					id: bmID,
+					bookTitle: chapterContent.book.title + (chapterContent.book?.subtitle ? (": " + chapterContent.book.subtitle) : ""),
+					chapterTitle: chapterContent.chapter.title
+				}));
+			}
 		}
 	}
 
@@ -44,18 +61,22 @@ function ChapterView({ navigation, route }) {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: chapter.title,
+			title: chapterContent.chapter.title,
 			headerTintColor: colors[theme].contrast,
 			headerStyle: {
 				backgroundColor: colors[theme].secondary
 			},
 			headerRight: HeaderRightButtonsWrapper
 		});
-	}, [id, navigation, ctx, changeBookmarkStatus]);
+	}, [chapterContent.chapter.title, navigation, ctx, changeBookmarkStatus]);
 
 	// TODO previous/next chapter buttons to the bottom
 	return <View style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
-		{selectedAnnotation && <InfoModal selectedAnnotation={selectedAnnotation} modalHandler={setSelectedAnnotation} bookID={chapter.bookID} />}
+		{selectedAnnotation && <InfoModal
+			selectedAnnotation={selectedAnnotation}
+			modalHandler={setSelectedAnnotation}
+			annotations={chapterContent.annotations}
+		/>}
 		<Text style={fontStyle}>
 			{splitContent.map((string) => {
 				if (string[0] === '#') {
@@ -71,6 +92,16 @@ function ChapterView({ navigation, route }) {
 }
 
 export default ChapterView;
+
+async function loadChapterContent(bookmarkID) {
+	const sepIDs = bookmarkID.split("/");
+	const result = await fetchBookWithAnnotation(sepIDs[0]);
+	return {
+		book: result.book,
+		chapter: result.book.Chapters.find((chap) => chap.id == sepIDs[1] /*not ===*/),
+		annotations: result.annotations
+	}
+}
 
 function parseChapterContent(content) {
 	let splitContent = [];

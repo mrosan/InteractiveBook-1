@@ -3,18 +3,13 @@ import { Modal, Text, View, Pressable, Image, StyleSheet } from 'react-native'
 
 import { ColorPalette as colors } from '../constants/styles'
 import { ReaderContext } from '../state/reader_context'
-import { Annotations } from '../constants/dummy_data'
 
-export function InfoModal({ selectedAnnotation, modalHandler, bookID }) {
+export function InfoModal({ selectedAnnotation, modalHandler, annotations }) {
 	const ctx = useContext(ReaderContext)
 	const theme = ctx.theme;
 	const fontSize = Math.min(ctx.fontSize, 20);
-	let annotation;
-
 	const id = selectedAnnotation.substring(1);
-	const bookAnnotations = Annotations.find((collection) => collection.bookID === bookID);
-	annotation = bookAnnotations.items.find((an) => an.id === id);
-	// TODO error handling
+	const annotation = annotations[id];
 
 	return <Modal visible={selectedAnnotation !== "" && selectedAnnotation !== undefined} animationType='fade' transparent={true}>
 		<Pressable style={styles.modalPressable} onPress={() => { modalHandler("") }}>

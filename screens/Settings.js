@@ -8,7 +8,7 @@ import { fetchBookmarks, clearBookmarks, saveBookmark } from '../utils/database'
 import { ColorPalette } from '../constants/styles'
 
 function Settings() {
-	const bookmarks = useSelector((state) => state.bookmarksR.ids);
+	const bookmarks = useSelector((state) => state.bookmarksReducer.bookmarks);
 	const dispatcher = useDispatch();
 	const readerCtx = useContext(ReaderContext);
 	const theme = ColorPalette[readerCtx.theme];
@@ -59,9 +59,9 @@ function Settings() {
 				onPress={async () => {
 					dispatcher(emptyBookmarkStore());
 					await clearBookmarks();
-					setBmCleared("Bookmarks cleared from device and memory.");
 					setBmLoaded("");
 					setBmSaved("");
+					setBmCleared("Bookmarks cleared from device and memory.");
 				}}
 				title={"Clear bookmarks"}
 				color={ColorPalette.light.secondary}
@@ -71,8 +71,13 @@ function Settings() {
 				onPress={() => {
 					clearBookmarks().then(async () => {
 						for (let i = 0; i < bookmarks.length; i++) {
-							const ids = bookmarks[i].split("/");
-							await saveBookmark({ bookID: ids[0], chapterID: ids[1] });
+							const ids = bookmarks[i].id.split("/");
+							await saveBookmark({
+								bookID: ids[0],
+								chapterID: ids[1],
+								bookTitle: bookmarks[i].bookTitle,
+								chapterTitle: bookmarks[i].chapterTitle
+							});
 						}
 						setBmCleared("");
 						setBmLoaded("");
@@ -88,12 +93,16 @@ function Settings() {
 					fetchBookmarks().then((res) => {
 						dispatcher(emptyBookmarkStore());
 						for (let i = 0; i < res.rows._array.length; i++) {
-							const { chapterID, bookID } = res.rows._array[i];
-							dispatcher(addBookmark({ id: createUniqueBookmarkID(bookID, chapterID) }));
+							const { chapterID, bookID, bookTitle, chapterTitle } = res.rows._array[i];
+							dispatcher(addBookmark({
+								id: createUniqueBookmarkID(bookID, chapterID),
+								bookTitle: bookTitle,
+								chapterTitle: chapterTitle
+							}));
 						}
 						setBmCleared("");
-						setBmLoaded("Bookmarks loaded.");
 						setBmSaved("");
+						setBmLoaded("Bookmarks loaded.");
 					});
 				}}
 				title={"Load bookmarks from device"}

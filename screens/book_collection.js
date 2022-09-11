@@ -1,16 +1,29 @@
 import { FlatList, View, Pressable, Text, Image, StyleSheet, useWindowDimensions } from 'react-native'
-import { Books } from '../constants/dummy_data'
+import { useEffect, useState } from 'react'
 
-function BookCollection({ navigation }) {
+import { fetchBooks } from '../utils/http'
+
+function BookCollection({ navigation, route }) {
+	let [books, setBooks] = useState([]);
+
+	useEffect(() => {
+		async function getBooks() {
+			return await fetchBooks();
+		}
+		getBooks().then((res) => {
+			setBooks(res);
+		});
+	}, []);
 
 	function GridItem(itemData) {
 		return <View style={styles.gridTile}>
 			<Pressable onPress={() => {
-				navigation.navigate("BookView", { bookID: itemData.item.id });
+				navigation.navigate("BookView", { bookID: itemData.item.bookID });
 			}}>
 				<View>
 					<Image source={{ uri: itemData.item.cover }} style={styles.coverImg} />
 					<Text style={styles.title}>{itemData.item.title}</Text>
+					{itemData.item.subtitle && <Text style={styles.subtitle}>{itemData.item.subtitle}</Text>}
 				</View>
 			</Pressable>
 		</View>
@@ -20,7 +33,7 @@ function BookCollection({ navigation }) {
 	const portrait = width < height;
 	return <View style={{ alignItems: portrait ? 'center' : 'stretch' }}>
 		<FlatList
-			data={Books}
+			data={books}
 			key={portrait ? "portraitFLkey" : "landscapeFLkey"}
 			keyExtractor={(item) => item.id}
 			renderItem={GridItem}
@@ -53,5 +66,9 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 20,
 		textAlign: 'center'
-	}
+	},
+	subtitle: {
+		fontSize: 16,
+		textAlign: 'center'
+	},
 });

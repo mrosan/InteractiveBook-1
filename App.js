@@ -27,8 +27,8 @@ export default function App() {
 function AppContent() {
 	const dispatcher = useDispatch();
 	const [inited, setupError, onLayoutRootView] = initApp(dispatcher);
-	const bookmarks = useSelector((state) => state.bookmarksR.ids);
 	// Disabled feature: save bookmarks to database when app goes to the background
+	// const bookmarks = useSelector((state) => state.bookmarksR.ids);
 	// setupAppStateObserver(inited, bookmarks);
 
 	if (setupError) {
@@ -77,9 +77,12 @@ function initApp(dispatcher) {
 		setInited(true);
 	}, []);
 
-	const onLayoutRootView = useCallback(async () => {
-		if (inited) {
+	const onLayoutRootView = useCallback(() => {
+		async function endLoading() {
 			await SplashScreen.hideAsync();
+		}
+		if (inited) {
+			endLoading();
 		}
 	}, [inited]);
 

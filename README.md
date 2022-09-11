@@ -38,17 +38,20 @@ The scope of the Interactive Book application is written in Gherkin, defined via
   - SQLite database
 - React Navigation: Native Stack navigator, Tab navigator
 - React Redux
+- Firebase backend with Axios
 - TBA
 
 ## Plans for the future
 - iOS fine-tuning
 - Themes for the whole app
+- Improve HTTP request error handling
 - Authentication
   - User feedback support
   - Purchase-only content
 - More interactive features
   - Pinch zoom to change fontsize
   - "Choose your own adventure" style books
+- Backend convenience features (updating books)
 - TBA
 
 # Credits

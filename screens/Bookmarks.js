@@ -4,43 +4,42 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'
 
 import { ColorPalette as colors } from '../constants/styles'
-import { Books, Chapters } from '../constants/dummy_data'
 import { removeBookmark } from '../state/bookmarks_store'
 
 function Bookmarks() {
 	const nav = useNavigation();
-	const bookmarkIds = useSelector((state) => state.bookmarksR.ids);
+	const bookmarks = useSelector((state) => state.bookmarksReducer.bookmarks);
 	const dispatcher = useDispatch();
 
 	function Bookmark(itemData) {
-		const sepIDs = itemData.item.split("/");
-		const book = Books.find((book) => book.id === sepIDs[0]);
-		const chapter = Chapters.find((chapter) => chapter.id === sepIDs[1] && chapter.bookID === book.id);
 		return <BookmarkListItem
-			book={book}
-			chapter={chapter}
-			onRemoveBookmark={() => { dispatcher(removeBookmark({ id: itemData.item })); }}
-			onSelectChapter={() => { nav.navigate("ChapterView", { chapterID: chapter.id, bookID: book.id }); }} />
+			bookTitle={itemData.item.bookTitle}
+			chapterTitle={itemData.item.chapterTitle}
+			onRemoveBookmark={() => { dispatcher(removeBookmark({ id: itemData.item.id })); }}
+			onSelectChapter={() => { nav.navigate("ChapterView", { bookmarkID: itemData.item.id }); }}
+		/>
 	}
 
 	return <View style={styles.list}>
-		{!!bookmarkIds.length && <FlatList
-			data={bookmarkIds}
-			keyExtractor={(item) => item}
+		{!!bookmarks.length && <FlatList
+			data={bookmarks}
+			keyExtractor={(item) => item.id}
 			renderItem={Bookmark}
 		/>}
-		{!bookmarkIds.length && <Text style={styles.empty}>There aren't any bookmarks here.</Text>}
+		{!bookmarks.length && <Text style={styles.empty}>There aren't any bookmarks here.</Text>}
 	</View>
 }
 
-function BookmarkListItem({ book, chapter, onRemoveBookmark, onSelectChapter }) {
+export default Bookmarks;
+
+function BookmarkListItem({ bookTitle, chapterTitle, onRemoveBookmark, onSelectChapter }) {
 
 	return <View style={styles.listItems}>
 		<Pressable style={styles.listContent} onPress={onSelectChapter}>
 			<Ionicons name='bookmark' size={36} color={colors.light.secondary} />
 			<View style={{ flex: 1 }}>
-				<Text style={styles.bookmarkChapter}>{chapter.title}</Text>
-				<Text style={styles.bookmarkBook}>{book.title + (book?.subtitle ? (": " + book.subtitle) : "")}</Text>
+				<Text style={styles.bookmarkChapter}>{chapterTitle}</Text>
+				<Text style={styles.bookmarkBook}>{bookTitle}</Text>
 			</View>
 		</Pressable>
 		<Pressable style={styles.remove} onPress={onRemoveBookmark}>
@@ -48,8 +47,6 @@ function BookmarkListItem({ book, chapter, onRemoveBookmark, onSelectChapter }) 
 		</Pressable>
 	</View>
 }
-
-export default Bookmarks;
 
 const styles = StyleSheet.create({
 	list: {
