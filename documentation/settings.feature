@@ -9,9 +9,10 @@ Feature: The Settings screen of the Interactive Book app
 		Then I see a preview of what the <setting> of Reading view will look like
 
 		Examples:
-			| title             | setting   |
-			| Theme setting     | theme     |
-			| Font size setting | font size |
+			| title                  | setting        |
+			| Theme setting          | theme          |
+			| Font size setting      | font size      |
+			| Text alignment setting | text alignment |
 
 	Scenario: Deleting my bookmarks
 		Given that I have bookmarks

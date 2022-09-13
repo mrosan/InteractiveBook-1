@@ -29,6 +29,10 @@ function Settings() {
 		}
 	}
 
+	function handleJustifyChange() {
+		readerCtx.changeTextJustified(!readerCtx.isJustified);
+	}
+
 	return <ScrollView style={styles.settingsContainer}>
 		<View style={[styles.settingContainer, { backgroundColor: theme.primary }]}>
 			<Text style={[styles.settingTitle, { color: theme.contrast }]}>Chapter reader themes</Text>
@@ -43,14 +47,19 @@ function Settings() {
 		<View style={styles.settingContainer}>
 			<Text style={styles.settingTitle}>Chapter reader font size</Text>
 			<View style={{ flexDirection: 'row' }}>
-				<TextInput
-					placeholder="8 < size < 50"
-					keyboardType="numeric"
-					value={readerCtx.fontSize}
-					onChangeText={handleFontSizeChanger}
-					style={styles.input}
-				/>
-				<Text style={[{ fontSize: readerCtx.fontSize }, styles.fontSample]}>This is what the text of the chapters is going to look like.</Text>
+				<View>
+					<TextInput
+						placeholder="8 < size < 50"
+						keyboardType="numeric"
+						value={readerCtx.fontSize}
+						onChangeText={handleFontSizeChanger}
+						style={styles.input}
+					/>
+					<Pressable onPress={handleJustifyChange} style={styles.justifyToggle}>
+						<Text style={styles.justifyToggleText}>{"align: " + (readerCtx.isJustified ? 'justified' : 'left')}</Text>
+					</Pressable>
+				</View>
+				<Text style={[{ fontSize: readerCtx.fontSize, textAlign: readerCtx.isJustified ? 'justify' : 'left' }, styles.fontSample]}>This is what the text of the chapters is going to look like.</Text>
 			</View>
 		</View>
 		<View style={styles.settingContainer}>
@@ -143,6 +152,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 36,
+		width: 96,
 		margin: 8,
 		borderWidth: 1,
 		padding: 8,
@@ -155,5 +165,19 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		padding: 4,
 		marginBottom: 4
-	}
+	},
+	justifyToggle: {
+		height: 36,
+		width: 96,
+		margin: 8,
+		padding: 4,
+		borderWidth: 1,
+		backgroundColor: ColorPalette.light.secondary,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	justifyToggleText: {
+		color: ColorPalette.light.primary,
+		fontSize: 12,
+	},
 });

@@ -6,7 +6,7 @@ export function Chapter({ content, fontStyle, modalHandler }) {
 	return <View>
 		{
 			splitContent.map((string) => {
-				return <View style={styles.paragraph} key={idx++} >
+				return <View style={{ marginBottom: fontStyle.fontSize - 4 }} key={idx++} >
 					<Paragraph content={string} fontStyle={fontStyle} modalHandler={modalHandler} />
 				</View>
 			})
@@ -21,7 +21,7 @@ function Paragraph({ content, fontStyle, modalHandler }) {
 		<Text style={fontStyle}>{'\t\t'}</Text>
 		{splitContent.map((string) => {
 			if (string[0] === '#') {
-				return <Text onPress={() => modalHandler(string)} style={[fontStyle, { fontWeight: 'bold' }]} key={idx++}>
+				return <Text style={[fontStyle, { fontWeight: 'bold' }]} onPress={() => modalHandler(string)} key={idx++}>
 					{string.substring(1)}
 				</Text>
 			} else {

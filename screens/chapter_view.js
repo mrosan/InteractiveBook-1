@@ -1,5 +1,6 @@
 import { useLayoutEffect, useContext, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
+import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux'
 
 import { ColorPalette as colors } from '../constants/styles'
@@ -35,8 +36,9 @@ function ChapterView({ navigation, route }) {
 	const fontStyle = {
 		color: colors[theme].contrast,
 		fontSize: ctx.fontSize,
-		textAlign: 'justify'
+		textAlign: ctx.isJustified ? 'justify' : 'left'
 	};
+	const bottomButtonStyle = [styles.bottomButton, { borderColor: colors[theme].secondary, backgroundColor: colors[theme].ternary }];
 
 	function changeBookmarkStatus() {
 		if (chapterIsLoaded) {
@@ -60,6 +62,16 @@ function ChapterView({ navigation, route }) {
 		/>
 	}
 
+	function BottomLeftButtonHandler() {
+		const chapter = chapterContent.book.Chapters.find((chap) => chap.id === chapterContent.chapter.id - 1);
+		navigation.dispatch(StackActions.replace('ChapterView', { chapter: chapter, book: chapterContent.book, annotations: chapterContent.annotations }));
+	}
+
+	function BottomRightButtonHandler() {
+		const chapter = chapterContent.book.Chapters.find((chap) => chap.id === chapterContent.chapter.id + 1);
+		navigation.dispatch(StackActions.replace('ChapterView', { chapter: chapter, book: chapterContent.book, annotations: chapterContent.annotations }));
+	}
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: chapterContent.chapter.title,
@@ -71,7 +83,6 @@ function ChapterView({ navigation, route }) {
 		});
 	}, [chapterContent.chapter.title, navigation, ctx, changeBookmarkStatus]);
 
-	// TODO previous/next chapter buttons to the bottom
 	return <ScrollView style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
 		{selectedAnnotation && <InfoModal
 			selectedAnnotation={selectedAnnotation}
@@ -83,7 +94,18 @@ function ChapterView({ navigation, route }) {
 			fontStyle={fontStyle}
 			modalHandler={setSelectedAnnotation}
 		/>
-		<View style={{ height: 50 }} />
+		{chapterContent.book.id !== -1 && <View style={styles.bottomButtons} >
+			<View style={styles.bottomButtonContainer}>
+				{chapterContent.chapter.id !== 1 && <Pressable onPress={BottomLeftButtonHandler} style={bottomButtonStyle}>
+					<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Previous </Text>
+				</Pressable>}
+			</View>
+			<View style={styles.bottomButtonContainer}>
+				{chapterContent.chapter.id !== chapterContent.book.Chapters.length && <Pressable onPress={BottomRightButtonHandler} style={bottomButtonStyle}>
+					<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Next	</Text>
+				</Pressable>}
+			</View>
+		</View>}
 	</ScrollView>
 }
 
@@ -103,5 +125,28 @@ const styles = StyleSheet.create({
 	readingArea: {
 		flex: 1,
 		padding: 16,
+	},
+	bottomButtons: {
+		marginTop: 12,
+		marginBottom: 32,
+		marginHorizontal: 8,
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	bottomButtonContainer: {
+		height: 46,
+		width: 120,
+	},
+	bottomButton: {
+		flex: 1,
+		padding: 8,
+		borderWidth: 2,
+		borderRadius: 8,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	bottomButtonText: {
+		fontSize: 16,
+		fontWeight: 'bold'
 	}
 });

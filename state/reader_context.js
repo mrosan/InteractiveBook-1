@@ -1,15 +1,11 @@
 import { createContext, useState } from 'react';
 
-export const ReaderContext = createContext({
-	theme: "light",
-	fontSize: 18,
-	changeTheme: (id) => { },
-	changeFontSize: (size) => { }
-})
+export const ReaderContext = createContext({});
 
 function ReaderContextProvider({ children }) {
 	const [theme, setTheme] = useState("light");
 	const [fontSize, setFontSize] = useState(18);
+	const [isJustified, setIsJustified] = useState(false);
 
 	function changeTheme(id) {
 		setTheme(id);
@@ -19,11 +15,17 @@ function ReaderContextProvider({ children }) {
 		setFontSize(size);
 	}
 
+	function changeTextJustified(isJustified) {
+		setIsJustified(isJustified);
+	}
+
 	const value = {
 		theme: theme,
-		changeTheme: changeTheme,
 		fontSize: fontSize,
-		changeFontSize: changeFontSize
+		isJustified: isJustified,
+		changeTheme: changeTheme,
+		changeFontSize: changeFontSize,
+		changeTextJustified: changeTextJustified
 	};
 
 	return <ReaderContext.Provider value={value}>{children}</ReaderContext.Provider>
