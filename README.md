@@ -10,7 +10,7 @@
 
 # Introduction
 ## Summary
-In the Interactive Book app, users can read stories while being able to interact with annotations to bring up more information. Annotations can range from illustrations to pieces of lore tied to the story's world, presented in a convenient and easy-to-access manner.
+In the Interactive Books app, users can read stories while being able to interact with annotations to bring up more information. Annotations can range from illustrations to pieces of lore tied to the story's world, presented in a convenient and easy-to-access manner.
 
 ## Motivations and project goals
 - Creating a portfolio project that showcases some of my technical skills.
@@ -25,7 +25,7 @@ In the Interactive Book app, users can read stories while being able to interact
 (*) _The commit history on the master branch represent the milestones quite accurately._
 
 # Behavior-driven documentation
-The scope of the Interactive Book application is written in Gherkin, defined via the Cucumber framework. For the ease of understanding, the following documents should be read in order:
+The scope of the Interactive Books application is written in Gherkin, defined via the Cucumber framework. For the ease of understanding, the following documents should be read in order:
 
 - [Navigation](./documentation/navigation.feature)
 - [Reading view](./documentation/reading_view.feature)

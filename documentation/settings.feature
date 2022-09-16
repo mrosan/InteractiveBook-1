@@ -1,4 +1,4 @@
-Feature: The Settings screen of the Interactive Book app
+Feature: The Settings screen of the Interactive Books app
 	As a user, I'd like to be able to customize my application, so that it fits my needs better.
 
 	Background:

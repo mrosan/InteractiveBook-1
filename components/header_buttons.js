@@ -19,3 +19,15 @@ export function HeaderRightButtons({ navigation, isBookmarked, bookmarkCallback 
 		</Pressable>
 	</View>
 }
+
+export function HeaderLeftButtons({ navigation }) {
+	const iconSize = 28;
+	const theme = useContext(ReaderContext).theme;
+	let color = colors[theme].contrast;
+
+	return <View style={{ flexDirection: 'row' }}>
+		<Pressable onPress={() => { navigation.goBack() }}>
+			<Ionicons name={'arrow-back'} size={iconSize} color={color} />
+		</Pressable>
+	</View>
+}

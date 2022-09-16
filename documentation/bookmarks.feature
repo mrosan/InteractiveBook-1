@@ -1,4 +1,4 @@
-Feature: Bookmarking chapters in the Interactive Book app
+Feature: Bookmarking chapters in the Interactive Books app
 	As a user, I'd like to be able to bookmark chapters,
 	so that I can find the place where I stopped reading more easily.
 

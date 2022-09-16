@@ -45,7 +45,7 @@ function AppContent() {
 					<Stack.Navigator screenOptions={DefaultAppStyle.header}>
 						<Stack.Screen name="BooksOverview" component={BooksOverview} options={{ headerShown: false }} />
 						<Stack.Screen name="BookView" component={BookView} options={{ title: "Book cover" }} />
-						<Stack.Screen name="ChapterView" component={ChapterView} options={{}} />
+						<Stack.Screen name="ChapterView" component={ChapterView} options={{ headerShown: false, headerMode: 'screen' }} />
 						<Stack.Screen name="Settings" component={Settings} />
 					</Stack.Navigator>
 				</NavigationContainer>

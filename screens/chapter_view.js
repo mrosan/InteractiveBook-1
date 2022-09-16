@@ -1,12 +1,12 @@
-import { useLayoutEffect, useContext, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
+import { useContext, useState } from 'react';
+import { Text, View, ScrollView, StyleSheet, Pressable, useWindowDimensions } from 'react-native'
 import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux'
 
 import { ColorPalette as colors } from '../constants/styles'
 import { Chapter } from '../components/chapter_content'
 import { InfoModal } from '../components/info_modal'
-import { HeaderRightButtons } from '../components/header_buttons';
+import { HeaderRightButtons, HeaderLeftButtons } from '../components/header_buttons';
 import { ReaderContext } from '../state/reader_context'
 import { addBookmark, removeBookmark, createUniqueBookmarkID } from '../state/bookmarks_store'
 import { fetchBookWithAnnotation } from '../utils/http'
@@ -54,14 +54,6 @@ function ChapterView({ navigation, route }) {
 		}
 	}
 
-	function HeaderRightButtonsWrapper() {
-		return <HeaderRightButtons
-			navigation={navigation}
-			isBookmarked={chapterIsBookmarked}
-			bookmarkCallback={changeBookmarkStatus}
-		/>
-	}
-
 	function BottomLeftButtonHandler() {
 		const chapter = chapterContent.book.Chapters.find((chap) => chap.id === chapterContent.chapter.id - 1);
 		navigation.dispatch(StackActions.replace('ChapterView', { chapter: chapter, book: chapterContent.book, annotations: chapterContent.annotations }));
@@ -72,41 +64,41 @@ function ChapterView({ navigation, route }) {
 		navigation.dispatch(StackActions.replace('ChapterView', { chapter: chapter, book: chapterContent.book, annotations: chapterContent.annotations }));
 	}
 
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: chapterContent.chapter.title,
-			headerTintColor: colors[theme].contrast,
-			headerStyle: {
-				backgroundColor: colors[theme].secondary
-			},
-			headerRight: HeaderRightButtonsWrapper
-		});
-	}, [chapterContent.chapter.title, navigation, ctx, changeBookmarkStatus]);
-
-	return <ScrollView style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
-		{selectedAnnotation && <InfoModal
-			selectedAnnotation={selectedAnnotation}
-			modalHandler={setSelectedAnnotation}
-			annotations={chapterContent.annotations}
-		/>}
-		<Chapter
-			content={chapterContent.chapter.content}
-			fontStyle={fontStyle}
-			modalHandler={setSelectedAnnotation}
-		/>
-		{chapterContent.book.id !== -1 && <View style={styles.bottomButtons} >
-			<View style={styles.bottomButtonContainer}>
-				{chapterContent.chapter.id !== 1 && <Pressable onPress={BottomLeftButtonHandler} style={bottomButtonStyle}>
-					<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Previous </Text>
-				</Pressable>}
+	const { width, height } = useWindowDimensions();
+	const portrait = width < height;
+	return <View style={[portrait ? styles.chapterScreenV : styles.chapterScreenH, { backgroundColor: colors[theme].secondary }]}>
+		<ScrollView style={{ backgroundColor: colors[theme].primary }} bounces={false} overScrollMode={'never'}>
+			{selectedAnnotation && <InfoModal
+				selectedAnnotation={selectedAnnotation}
+				modalHandler={setSelectedAnnotation}
+				annotations={chapterContent.annotations}
+			/>}
+			<View style={[styles.header, { backgroundColor: colors[theme].secondary }]}>
+				<HeaderLeftButtons navigation={navigation} />
+				<Text style={{ color: colors[theme].contrast, fontSize: 20, fontWeight: 'bold' }}>{chapterContent.chapter.title}</Text>
+				<HeaderRightButtons navigation={navigation} isBookmarked={chapterIsBookmarked} bookmarkCallback={changeBookmarkStatus} />
 			</View>
-			<View style={styles.bottomButtonContainer}>
-				{chapterContent.chapter.id !== chapterContent.book.Chapters.length && <Pressable onPress={BottomRightButtonHandler} style={bottomButtonStyle}>
-					<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Next	</Text>
-				</Pressable>}
+			<View style={[styles.readingArea, { backgroundColor: colors[theme].primary }]}>
+				<Chapter
+					content={chapterContent.chapter.content}
+					fontStyle={fontStyle}
+					modalHandler={setSelectedAnnotation}
+				/>
 			</View>
-		</View>}
-	</ScrollView>
+			{chapterContent.book.id !== -1 && <View style={styles.bottomButtons} >
+				<View style={styles.bottomButtonContainer}>
+					{chapterContent.chapter.id !== 1 && <Pressable onPress={BottomLeftButtonHandler} style={bottomButtonStyle}>
+						<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Previous </Text>
+					</Pressable>}
+				</View>
+				<View style={styles.bottomButtonContainer}>
+					{chapterContent.chapter.id !== chapterContent.book.Chapters.length && <Pressable onPress={BottomRightButtonHandler} style={bottomButtonStyle}>
+						<Text style={[styles.bottomButtonText, { color: colors[theme].contrast }]}> Next	</Text>
+					</Pressable>}
+				</View>
+			</View>}
+		</ScrollView>
+	</View>
 }
 
 export default ChapterView;
@@ -122,19 +114,33 @@ async function loadChapterContent(bookmarkID) {
 }
 
 const styles = StyleSheet.create({
+	chapterScreenV: {
+		paddingTop: 40,
+		flex: 1
+	},
+	chapterScreenH: {
+		paddingTop: 24,
+		flex: 1
+	},
+	header: {
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
 	readingArea: {
 		flex: 1,
 		padding: 16,
 	},
 	bottomButtons: {
-		marginTop: 12,
-		marginBottom: 32,
-		marginHorizontal: 8,
+		margin: 12,
+		marginBottom: 24,
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
 	bottomButtonContainer: {
-		height: 46,
+		height: 48,
 		width: 120,
 	},
 	bottomButton: {

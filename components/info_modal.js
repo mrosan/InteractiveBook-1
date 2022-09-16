@@ -12,7 +12,7 @@ export function InfoModal({ selectedAnnotation, modalHandler, annotations }) {
 	const id = selectedAnnotation.substring(1);
 	const annotation = annotations[id] ?? UnknownAnnotation;
 
-	// Limitation: currently only 100x100 and 300x100 imgs are supported.
+	// Limitation: currently only 100x100 and 300x150 imgs are supported.
 	const [imgWidth, setImgWidth] = useState(100);
 	Image.getSize(annotation.img, (w, h) => {
 		if (w > (h + 50)) {
@@ -28,7 +28,7 @@ export function InfoModal({ selectedAnnotation, modalHandler, annotations }) {
 				<Text style={[styles.title, { color: colors[theme].contrast, fontSize: (fontSize + 4) }]}> {id} </Text>
 				<View style={[styles.content]}>
 					<View style={[styles.imgPanel]}>
-						<Image source={{ uri: annotation.img }} resizeMode='cover' style={[styles.img, { width: imgWidth }]} />
+						<Image source={{ uri: annotation.img }} resizeMode='cover' style={[styles.img, { width: imgWidth, height: imgWidth === 100 ? 100 : 150 }]} />
 					</View>
 					<Text style={{ color: colors[theme].contrast, fontSize: fontSize }}>
 						{annotation.desc}
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontWeight: 'bold',
-		alignSelf: 'center'
+		alignSelf: 'center',
+		textAlign: 'center'
 	},
 	content: {
 		flexDirection: 'column',

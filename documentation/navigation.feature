@@ -1,4 +1,4 @@
-Feature: Navigating within the Interactive Book app
+Feature: Navigating within the Interactive Books app
 	As a user, I'd like to be able to navigate between the app's screens so that I can access the app's features easily.
 
 	Scenario: Arriving at the index screen of the app

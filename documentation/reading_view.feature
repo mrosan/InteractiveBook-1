@@ -1,4 +1,4 @@
-Feature: Reading chapters within the Interactive Book app
+Feature: Reading chapters within the Interactive Books app
 	As a user, I'd like to be able to access a book's contents so that I can read the book in a convenient manner.
 
 	Scenario: The entire chapter content is accessible

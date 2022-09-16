@@ -1,13 +1,13 @@
 {
 	"expo": {
-		"name": "InteractiveBook",
-		"slug": "InteractiveBook",
+		"name": "Interactive Books",
+		"slug": "InteractiveBooks",
 		"version": "1.0.0",
 		"orientation": "default",
-		"icon": "./assets/icon.png",
+		"icon": "./assets/interactive-logo.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/splash.png",
+			"image": "./assets/interactive-splash.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -22,7 +22,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
+				"foregroundImage": "./assets/interactive-logo.png",
 				"backgroundColor": "#FFFFFF"
 			}
 		},
