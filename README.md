@@ -6,7 +6,7 @@
 	- [Tech stack](#tech-stack)
 	- [Features](#features)
 	- [Plans for the future](#plans-for-the-future)
-- [Credits](#credits)
+- [External links](#external-links)
 
 # Introduction
 ## Summary
@@ -69,6 +69,7 @@ The scope of the Interactive Books application is written in Gherkin, defined vi
 - Backend convenience features (streamline book updates)
 - ...and of course, many more stories to write!
 
-# Credits
-- Art created with [Midjourney](https://www.midjourney.com/)
-- Gemslingers inspired by [Path of Exile](https://www.pathofexile.com/)
+# External links
+- The Interactive Books app is available for free on [Google Play Store](https://play.google.com/store/apps/details?id=com.trikki.InteractiveBooks)
+- The illustrations were created with [Midjourney](https://www.midjourney.com/)
+- My Gemslingers novel was inspired by [Path of Exile](https://www.pathofexile.com/)
