@@ -1,33 +1,39 @@
 {
-	"expo": {
-		"name": "Interactive Books",
-		"slug": "InteractiveBooks",
-		"version": "1.0.0",
-		"orientation": "default",
-		"icon": "./assets/interactive-logo.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/interactive-splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": [
-			"**/*"
-		],
-		"ios": {
-			"supportsTablet": true
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/interactive-logo.png",
-				"backgroundColor": "#FFFFFF"
-			}
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		}
-	}
+  "expo": {
+    "name": "Library of Shadeverse",
+    "slug": "InteractiveBooks",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/interactive-logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/interactive-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/interactive-logo.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.trikki.InteractiveBooks"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8b1edf2a-449b-4c21-aee8-ab8cd24d7668"
+      }
+    }
+  }
 }

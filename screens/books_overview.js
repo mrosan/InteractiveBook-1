@@ -10,7 +10,7 @@ const Tabs = createBottomTabNavigator();
 
 function BooksOverview() {
 	return <Tabs.Navigator screenOptions={Object.assign({}, DefaultAppStyle.header, DefaultAppStyle.footer)}>
-		<Tabs.Screen name="Library" component={BookCollection} options={{
+		<Tabs.Screen name="Library of Shadeverse" component={BookCollection} options={{
 			tabBarIcon: ({ color, size }) => <Ionicons name='library' size={size} color={color} />
 		}} />
 		<Tabs.Screen name="Bookmarks" component={Bookmarks} options={{

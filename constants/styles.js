@@ -12,7 +12,7 @@ export const ColorPalette = {
 		primary: 'black',
 		secondary: '#333399',
 		ternary: '#2929a3',
-		contrast: 'white',
+		contrast: '#afafaf',
 		off: '#202060'
 	},
 	cozy: {

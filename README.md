@@ -10,7 +10,7 @@
 
 # Introduction
 ## Summary
-In the Interactive Books app, users can read stories while being able to interact with annotations to bring up more information. Annotations can range from illustrations to pieces of lore tied to the story's world, presented in a convenient and easy-to-access manner.
+In the Library of Shadeverse app, users can read fantasy novels while being able to interact with annotations to bring up more information. Annotations can range from illustrations to pieces of lore tied to the story's world, presented in a convenient and easy-to-access manner.
 
 ## Motivations and project goals
 - Creating a portfolio project that showcases some of my technical skills.
@@ -25,7 +25,7 @@ In the Interactive Books app, users can read stories while being able to interac
 (*) _The commit history on the master branch represent the milestones quite accurately._
 
 # Behavior-driven documentation
-The scope of the Interactive Books application is written in Gherkin, defined via the Cucumber framework. For the ease of understanding, the following documents should be read in order:
+The scope of the Library of Shadeverse application is written in Gherkin, defined via the Cucumber framework. For the ease of understanding, the following documents should be read in order:
 
 - [Navigation](./documentation/navigation.feature)
 - [Reading view](./documentation/reading_view.feature)
@@ -70,6 +70,6 @@ The scope of the Interactive Books application is written in Gherkin, defined vi
 - ...and of course, many more stories to write!
 
 # External links
-- The Interactive Books app is available for free on [Google Play Store](https://play.google.com/store/apps/details?id=com.trikki.InteractiveBooks)
+- The Library of Shadeverse app is available for free on [Google Play Store](https://play.google.com/store/apps/details?id=com.trikki.InteractiveBooks)
 - The illustrations were created with [Midjourney](https://www.midjourney.com/)
 - My Gemslingers novel was inspired by [Path of Exile](https://www.pathofexile.com/)

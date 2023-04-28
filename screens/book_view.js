@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { LoadingBook } from '../constants/dummy_data'
 import { ColorPalette as colors } from '../constants/styles'
 import { fetchBookWithAnnotation } from '../utils/http'
+import { parseParagraphContent } from '../components/chapter_content'
 
 function BookView({ route, navigation }) {
 	const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
@@ -33,6 +34,8 @@ function BookView({ route, navigation }) {
 		</View>
 	}
 
+	const summary = book.summary.split("|");
+
 	return <View style={styles.page}>
 		<View style={{ flex: 1, justifyContent: 'flex-start' }}>
 			<View style={styles.overview}>
@@ -47,10 +50,15 @@ function BookView({ route, navigation }) {
 						<Text><B>Author:</B> {book.author}</Text>
 						<Text><B>Length:</B> {book.length}</Text>
 						<Text><B>Status:</B> {book.status}</Text>
+						<Text>Written in {book.year}</Text>
 					</View>
 				</View>
 			</View>
-			<Text style={styles.summary}><B>Synopsis:</B> {book.summary}</Text>
+			<Text style={styles.summary}><B>Synopsis:</B> {
+				summary.map((paragraph, index) => {
+					return <Text key={index}>{paragraph + "\n\n"}</Text>
+				})
+			}</Text>
 			{portrait && <ChapterListContainer book={book} annotations={annotations} navigation={navigation} portraitMode={portrait} />}
 		</View>
 		{!portrait && <ChapterListContainer book={book} annotations={annotations} navigation={navigation} portraitMode={portrait} />}
@@ -81,8 +89,6 @@ function ChapterListContainer({ book, annotations, navigation, portraitMode }) {
 		{!chapters.length && <Text>No chapters are available at this time.</Text>}
 	</View>
 }
-
-
 
 export default BookView;
 

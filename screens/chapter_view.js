@@ -36,8 +36,12 @@ function ChapterView({ navigation, route }) {
 	const fontStyle = {
 		color: colors[theme].contrast,
 		fontSize: ctx.fontSize,
-		textAlign: ctx.isJustified ? 'justify' : 'left'
+		textAlign: ctx.isJustified ? 'justify' : 'left',
 	};
+	const annotationStyle = {
+		textDecorationLine: ctx.isUnderlined ? 'underline' : 'none',
+		fontWeight: 'bold'
+	}
 	const bottomButtonStyle = [styles.bottomButton, { borderColor: colors[theme].secondary, backgroundColor: colors[theme].ternary }];
 
 	function changeBookmarkStatus() {
@@ -82,6 +86,7 @@ function ChapterView({ navigation, route }) {
 				<Chapter
 					content={chapterContent.chapter.content}
 					fontStyle={fontStyle}
+					annotationStyle={annotationStyle}
 					modalHandler={setSelectedAnnotation}
 				/>
 			</View>

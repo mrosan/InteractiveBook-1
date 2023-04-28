@@ -1,4 +1,4 @@
-Feature: The Settings screen of the Interactive Books app
+Feature: The Settings screen of the Library of Shadeverse app
 	As a user, I'd like to be able to customize my application, so that it fits my needs better.
 
 	Background:

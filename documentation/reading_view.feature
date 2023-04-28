@@ -1,4 +1,4 @@
-Feature: Reading chapters within the Interactive Books app
+Feature: Reading chapters within the Library of Shadeverse app
 	As a user, I'd like to be able to access a book's contents so that I can read the book in a convenient manner.
 
 	Scenario: The entire chapter content is accessible

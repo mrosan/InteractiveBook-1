@@ -51,7 +51,7 @@ function BookCollection({ navigation, route }) {
 				key={portrait ? "portraitFLkey" : "landscapeFLkey"}
 				keyExtractor={(item) => item.bookID}
 				renderItem={GridItem}
-				numColumns={portrait ? 2 : 5}
+				numColumns={portrait ? 2 : 4}
 				style={styles.grid}
 				columnWrapperStyle={{ alignItems: 'stretch' }}
 				showsVerticalScrollIndicator={false}
